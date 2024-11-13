@@ -1,0 +1,79 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+<style>
+  body {
+    font-family: 'arial black';
+    background-image: url("https://i.pinimg.com/1200x/29/85/74/2985740b5112274c7533e7a0ca42161d.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color:  #FFFFFF	;
+  }
+
+    a {
+    color: #FF00CC;
+    text-decoration: none;
+  }
+
+
+
+
+</style>
+   <h1>Количество публикаций: {{ post_count }}</h1>
+
+   <hr>
+   {% if posts %}
+       <table>
+           <tr style="border-bottom: 2px solid black;">
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Превью</td>
+           </tr>
+
+           {% for post in posts%}
+         <tr style="border-bottom: 2px solid black;">
+        <td>
+            <a href="{% url 'post_detail' post.pk %}">
+                <b>{{ post.title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b>
+            </a>
+        </td>
+        <td>{{ post.publication_date|date:'M d Y' }}</td>
+        <td style="text-align: justify;">{{ post.text|censor:"викинг, Викинги, викингов, лидер, Лидер"|truncatewords:20 }}</td>
+    </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Публикаций нет!</h2>
+   {% endif %}
+    {# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

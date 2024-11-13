@@ -1,0 +1,40 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+<style>
+  body {
+    font-family: 'arial black';
+    color: #FFFFFF;
+    background-color: #000000;
+  }
+</style>
+   <hr>
+   {% if post %}
+       <table>
+           <tr style="border-bottom: 2px solid black;">
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Текст</td>
+           </tr>
+
+
+           <tr>
+               <td><b>{{ post.title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b></td>
+               <td>{{ post.publication_date|date:'M d Y' }}</td>
+               <td style="text-align: justify;"> {{ post.text|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</td>
+
+           </tr>
+
+
+       </table>
+   {% else %}
+       <h2>Публикации не существует!</h2>
+   {% endif %}
+{% endblock content %}

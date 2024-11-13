@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<style>
+  body {
+    font-family: 'arial black';
+    color: #FFFFFF;
+    background-color: #000000;
+  }
+</style>
+
+<h1>Поиск публикации</h1>
+<hr>
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Найти" />
+</form>
+
+<hr>
+<h3> Ранние публикации: </h3>
+{% if posts %}
+    {% for post in posts %}
+    <li>
+      <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Ничего не найдено.</p>
+{% endif %}
+
+{% endblock content %}
