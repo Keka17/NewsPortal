@@ -1,0 +1,30 @@
+
+{% block content %}
+
+<h1>User's profile</h1>
+
+{% if user.is_authenticated %}
+  <h2>Welcome, {{ user.username }}!</h2>
+  <p>You are currently logged in.</p>
+<!-- проверяю является ли автором-->
+ {% if not is_not_authors %}
+        <p>You are already an author.</p>
+    {% else %}
+        <p> You are not an author!</p>
+    {% endif %}
+
+  {% if is_not_authors %}
+  <button> <a href="{% url 'upgrade_me' %}"> Хочу стать автором!</a> </button>
+  {% endif %}
+
+  <p><a href="{% url 'account_logout' %}">Log Out</a></p>
+{% else %}
+
+  <h2>You are not logged in</h2>
+  <p>Please log in or sign up to access all features.</p>
+  <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+    <li><a href="{% url 'account_login' %}">Log In</a></li>
+
+{% endif %}
+
+{% endblock content %}

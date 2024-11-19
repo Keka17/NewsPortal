@@ -2,8 +2,15 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .filters import PostFilter
-from django.shortcuts import redirect
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
+from django.shortcuts import reverse
+from django.shortcuts import redirect
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 
 class PostsList(ListView):
     model = Post
@@ -47,7 +54,8 @@ class PostSearch(ListView):
             return self.render_to_response(context)
 
 
-class NewsCreate(CreateView):
+class NewsCreate(CreateView, PermissionRequiredMixin):
+    permission_required = ('News.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_create.html'
@@ -63,7 +71,8 @@ class NewsCreate(CreateView):
         post.save()
         return redirect(post.get_absolute_url())
 
-class NewsEdit(UpdateView):
+class NewsEdit(UpdateView, PermissionRequiredMixin):
+    permission_required = ('News.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_create.html'
@@ -76,15 +85,16 @@ class NewsEdit(UpdateView):
         post.save()
         return redirect(post.get_absolute_url())
 
+
 class NewsDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('posts_list') # сюда перекинут юзера после удаления публикации
-
+    success_url = reverse_lazy('posts_list') 
     def get_queryset(self):
         return super().get_queryset().filter(news_type='NE')
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(CreateView, PermissionRequiredMixin):
+    permission_required = ('News.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_create.html'
@@ -101,10 +111,14 @@ class ArticlesCreate(CreateView):
         return redirect(post.get_absolute_url())
 
 
-class ArticlesEdit(UpdateView):
+class ArticlesEdit(UpdateView, LoginRequiredMixin, TemplateView, PermissionRequiredMixin):
+    permission_required = ('News.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_create.html'
+
+    def get_success_url(self):
+        return reverse('articles_edit', args=[self.object.pk])
 
     def get_queryset(self):
         return super().get_queryset().filter(news_type='AR')
@@ -115,6 +129,7 @@ class ArticlesEdit(UpdateView):
         return redirect(post.get_absolute_url())
 
 
+
 class ArticlesDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
@@ -122,3 +137,23 @@ class ArticlesDelete(DeleteView):
 
     def get_queryset(self):
         return super().get_queryset().filter(news_type='AR')
+
+
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
+
+@login_required
+def upgrade_me(request):
+    user = request.user
+    authors_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
+        authors_group.user_set.add(user)
+    return redirect('/')
+
+
