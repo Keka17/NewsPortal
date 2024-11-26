@@ -1,5 +1,5 @@
+
 from django import forms
-from django.template.defaultfilters import title
 from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
 
@@ -83,6 +83,7 @@ class PostForm(forms.ModelForm):
         post.author = author
         if commit:
             post.save()
+            self.save_m2m()
         return post
 
 

@@ -25,10 +25,17 @@ class Author(models.Model):
         self.rating = total
         self.save(())
 
+    # выводится имя атвора, а не его id
+    def __str__(self):
+        return self.author.username
+
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=5, unique=True)
+    category_name = models.CharField(max_length=30, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, related_name='subscribed_categories')
 
+    def __str__(self):
+        return self.category_name
 
 class Post(models.Model):
 

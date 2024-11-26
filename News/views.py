@@ -1,16 +1,17 @@
+
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
-from django.shortcuts import reverse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-
+from django.shortcuts import reverse, redirect
+from .models import Category, Post
 
 class PostsList(ListView):
     model = Post
@@ -69,6 +70,9 @@ class NewsCreate(CreateView, PermissionRequiredMixin):
         post = form.save(commit=False)
         post.news_type = 'NE'
         post.save()
+
+        form.save_m2m()  # Сохраняем связи Many-to-ManyField (категории)
+
         return redirect(post.get_absolute_url())
 
 class NewsEdit(UpdateView, PermissionRequiredMixin):
@@ -89,7 +93,8 @@ class NewsEdit(UpdateView, PermissionRequiredMixin):
 class NewsDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('posts_list') 
+    success_url = reverse_lazy('posts_list')
+
     def get_queryset(self):
         return super().get_queryset().filter(news_type='NE')
 
@@ -107,6 +112,9 @@ class ArticlesCreate(CreateView, PermissionRequiredMixin):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.news_type = 'AR'
+        category = form.cleanded_data.get('category')
+        if category:
+            post.category = category
         post.save()
         return redirect(post.get_absolute_url())
 
@@ -125,9 +133,11 @@ class ArticlesEdit(UpdateView, LoginRequiredMixin, TemplateView, PermissionRequi
 
     def form_valid(self, form):
         post = form.save(commit=False)
+        category = form.cleaned_data.get('category')
+        if category:
+            post.category = category  # Назначаем категорию публикации
         post.save()
         return redirect(post.get_absolute_url())
-
 
 
 class ArticlesDelete(DeleteView):
@@ -155,5 +165,17 @@ def upgrade_me(request):
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
     return redirect('/')
+
+@login_required
+def subscribe(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+
+    if request.user in category.subscribers.all():
+        category.subscribers.remove(request.user)
+    else:
+        category.subscribers.add(request.user)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 

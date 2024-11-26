@@ -3,6 +3,8 @@ from .views import (PostsList, PostDetail, PostSearch,
                     NewsCreate, NewsEdit, NewsDelete,
                     ArticlesCreate, ArticlesEdit, ArticlesDelete, IndexView)
 
+# app_name = 'news'
+
 urlpatterns = [
 
    path('', PostsList.as_view(), name='posts_list'),

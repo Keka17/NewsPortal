@@ -1,6 +1,7 @@
 import os.path
 from pathlib import Path
 
+from django.conf.global_settings import DEFAULT_FROM_EMAIL
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'django_apscheduler',
 
     'allauth',
     'allauth.account',
@@ -30,7 +32,10 @@ INSTALLED_APPS = [
 
     'News',
     'django_filters',
+
 ]
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 SITE_ID = 1
 
@@ -125,10 +130,34 @@ STATICFILES_DIRS = [
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
+
+# настройки для верификации email-а
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
 
 ACCOUNT_FORMS = {'signup': 'News.forms.BasicSignupForm'}
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# работает только с VPN
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+EMAIL_HOST_USER = 'charliebrownkb3@gmail.com'
+EMAIL_HOST_PASSWORD = 'xiypglkezakcspii'
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
