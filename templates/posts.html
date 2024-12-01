@@ -11,7 +11,7 @@ Posts
 <style>
   body {
     font-family: 'arial black';
-    background-image: url("https://i.pinimg.com/736x/ff/61/0e/ff610e58b8a7bc7e73705fe85528aed1.jpg");
+    background-image: url("https://i.pinimg.com/1200x/ff/61/0e/ff610e58b8a7bc7e73705fe85528aed1.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     color:  #FFFFFF	;
@@ -21,7 +21,9 @@ Posts
     color: #FF00CC;
     text-decoration: none;
   }
-
+    .publication_date-color {
+   color: #00FF00;
+   }
 
 
 
@@ -44,7 +46,7 @@ Posts
                 <b>{{ post.title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b>
             </a>
         </td>
-        <td>{{ post.publication_date|date:'M d Y' }}</td>
+        <td class="publication_date-color">{{ post.publication_date|date:'M d Y' }}</td>
         <td style="text-align: justify;">{{ post.text|censor:"викинг, Викинги, викингов, лидер, Лидер"|truncatewords:20 }}</td>
     </tr>
            {% endfor %}
