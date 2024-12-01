@@ -1,12 +1,12 @@
 
 
 from django.contrib import admin
-from .models import Post, Author, Category, PostCategory #Make sure you import PostCategory
+from .models import Post, Author, Category, PostCategory 
 
 
-class PostCategoryInline(admin.TabularInline):  # Or StackedInline if you prefer
+class PostCategoryInline(admin.TabularInline):  
     model = PostCategory
-    extra = 1  # Allow adding extra categories
+    extra = 1  
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -14,7 +14,7 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [PostCategoryInline]
 
     def get_categories_str(self, obj):
-        return ", ".join([cat.category.category_name for cat in obj.postcategory_set.all()]) # updated the queryset to use postcategory_set
+        return ", ".join([cat.category.category_name for cat in obj.postcategory_set.all()]) 
     get_categories_str.short_description = 'Categories'
 
 
