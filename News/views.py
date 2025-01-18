@@ -1,3 +1,4 @@
+from django.core.cache import cache  # Correct import
 
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -25,10 +26,20 @@ class PostsList(ListView):
         context['post_count'] = Post.objects.count()
         return context
 
+
+# Кэшируем публикацию до изменения
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
+    def get_object(self, *args, **kwargs):
+
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class PostSearch(ListView):
@@ -112,10 +123,10 @@ class ArticlesCreate(CreateView, PermissionRequiredMixin):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.news_type = 'AR'
-        category = form.cleanded_data.get('category')
-        if category:
-            post.category = category
         post.save()
+
+        form.save_m2m()  # Сохраняем связи Many-to-ManyField (категории)
+
         return redirect(post.get_absolute_url())
 
 
@@ -170,12 +181,11 @@ def upgrade_me(request):
 def subscribe(request, category_id):
     category = get_object_or_404(Category, id=category_id)
 
-    if request.user in category.subscribers.all():
-        category.subscribers.remove(request.user)
-    else:
-        category.subscribers.add(request.user)
+    if request.method == 'POST':
+        if request.user in category.subscribers.all():
+            category.subscribers.remove(request.user)
+        else:
+            category.subscribers.add(request.user)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
 

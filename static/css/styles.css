@@ -1,15 +1,27 @@
 @charset "UTF-8";
-/*!
-* Start Bootstrap - Bare v5.0.9 (https://startbootstrap.com/template/bare)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-bare/blob/master/LICENSE)
-*/
-/*!
- * Bootstrap  v5.2.3 (https://getbootstrap.com/)
- * Copyright 2011-2022 The Bootstrap Authors
- * Copyright 2011-2022 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+
+.navbar.navbar-dark { /* Target the navbar specifically when it's dark */
+    background-color: black !important; /* Use !important cautiously */
+    color: white !important;            /* Use !important cautiously */
+}
+
+
+.navbar-brand {
+    /*This is a sample selector - you may need to adjust this if your HTML structure is different*/
+    text-indent: -9999px; /* Hides the text off-screen */
+    overflow: hidden;     /* Prevents the hidden text from affecting layout */
+    background-image: url('/static/images/logo.png');    background-size: contain; /* Adjust to fit within the anchor element */
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 50px 50px;
+    transform: translateY(30px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -3724,6 +3736,9 @@ textarea.form-control-lg {
 .tab-content > .active {
   display: block;
 }
+
+
+
 
 .navbar {
   --bs-navbar-padding-x: 0;
