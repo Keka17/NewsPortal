@@ -1,6 +1,5 @@
-from django.core.cache import cache  # Correct import
-
-from django.http import HttpResponseRedirect
+from django.core.cache import cache
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostFilter
@@ -13,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import reverse, redirect
 from .models import Category, Post
+
 
 class PostsList(ListView):
     model = Post
@@ -27,12 +27,12 @@ class PostsList(ListView):
         return context
 
 
-# Кэшируем публикацию до изменения
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
 
+    # Кэшируем публикацию до изменения
     def get_object(self, *args, **kwargs):
 
         obj = cache.get(f'post-{self.kwargs["pk"]}', None)
@@ -188,4 +188,28 @@ def subscribe(request, category_id):
             category.subscribers.add(request.user)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+from django.shortcuts import redirect
+
+from rest_framework import generics, permissions
+from .serializers import PostSerializer
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
+
+class NewsListAPIView(generics.ListCreateAPIView):   # GET всем, POST - только авторизованным
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Post.objects.filter(news_type='NE')
+    serializer_class = PostSerializer
+
+class ArticlesListAPIView(generics.ListCreateAPIView):  # GET всем, POST - только авторизованным
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Post.objects.filter(news_type='AR')
+    serializer_class = PostSerializer
+
+class PostDetailAPIView(generics.RetrieveUpdateDestroyAPIView):  # GET всем, PUT/DELETE -  только авторизованным
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
 

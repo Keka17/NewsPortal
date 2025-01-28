@@ -1,8 +1,16 @@
 from django_filters import FilterSet, DateFilter
 from .models import Post
 from django import forms
+from django.utils.translation import gettext as _
+
 
 class PostFilter(FilterSet):
+    publication_date = DateFilter(
+        field_name='publication_date',
+        lookup_expr='gte',
+        widget=forms.DateInput(format='%d-%m-%Y', attrs={'type': 'date'}),
+        label=_('Публикация от')  # Локализация
+    )
 
     class Meta:
         model = Post
@@ -10,10 +18,7 @@ class PostFilter(FilterSet):
             'title': ['contains'],
             'author': ['exact'],  # foreign key
         }
-
-    publication_date = DateFilter(
-        field_name='publication_date',
-        lookup_expr='gte',
-        widget=forms.DateInput(format='%d-%m-%Y', attrs={'type': 'date'})
-    )
-
+        labels = {
+            'title': _('Заголовок'),
+            'author': _('Автор'),  # Локализация для автора
+        }

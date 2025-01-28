@@ -1,4 +1,6 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
+
 
 {% block content %}
 <style>
@@ -9,24 +11,24 @@
   }
 </style>
 
-<h1>Поиск публикации</h1>
+<h1>{% trans 'Поиск публикации' %}: </h1>
 <hr>
 <form action="" method="get">
     {{ filterset.form.as_p }}
-    <input type="submit" value="Найти" />
+    <input type="submit" value="{% trans 'Найти' %}" />
 </form>
 
 <hr>
-<h3> Ранние публикации: </h3>
+<h3>{% trans 'Ранние публикации' %}:</h3>
 {% if posts %}
     {% for post in posts %}
     <li>
-      <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+      <a href="{% url 'post_detail' post.pk %}">{{ post.get_localized_title }}</a>
     </li>
     {% endfor %}
   </ul>
 {% else %}
-  <p>Ничего не найдено.</p>
+  <p>{% trans 'Ничего не найдено' %}.</p>
 {% endif %}
 
 {% endblock content %}

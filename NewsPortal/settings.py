@@ -33,7 +33,7 @@ INSTALLED_APPS = [
 
     'News',
     'django_filters',
-
+    'rest_framework'
 ]
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'NewsPortal.urls'
@@ -105,11 +105,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Russian')
+]
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
+
 
 USE_TZ = True
 
@@ -166,116 +177,125 @@ CACHES = {
     }
 }
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'style': '{',
-    'formatters': {
-        'simple_format': {
-            'format': '%(asctime)s %(levelname)s %(message)s'
-        },
-        'verbose_format': {
-            'format': '%(asctime)s %(levelname)s '
-                      '%(message)s %(pathname)s'
-        },
-        'extended_format': {
-            'format': '%(asctime)s %(levelname)s '
-                      '%(message)s %(pathname)s %(exc_info)s '
-        },
-        'module_format': {
-            'format': '%(asctime)s %(levelname)s '
-                      '%(module)s  %(message)s'
-        },
-    },
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-    },
-
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple_format',
-        },
-        'general_file': {
-            'level': 'INFO',
-            'filters': ['require_debug_false'],
-            'class': 'logging.FileHandler',
-            'filename': 'general.log',
-            'formatter': 'module_format',
-        },
-        'verbose_console': {
-            'level': 'WARNING',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose_format',
-        },
-        'extended_console': {
-            'level': 'ERROR',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-            'formatter': 'extended_format',
-        },
-
-        'errors_file': {
-            'level': 'ERROR',
-            'filters': ['require_debug_true'],
-            'class': 'logging.FileHandler',
-            'filename': 'errors.log',
-            'formatter': 'extended_format',
-        },
-        'security_file': {
-            'level': 'INFO',
-            'filters': ['require_debug_false'],
-            'class': 'logging.FileHandler',
-            'filename': 'security.log',
-            'formatter': 'module_format',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'verbose_format'
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'extended_console', 'general_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['errors_file', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.server': {
-            'handlers': ['errors_file', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.template': {
-            'handlers': ['errors_file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['errors_file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.security': {
-            'handlers': ['security_file'],
-            'level': 'INFO',
-            'propagate': False,
-
-        }
-    }
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10
 }
+
+
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'style': '{',
+#     'formatters': {
+#         'simple_format': {
+#             'format': '%(asctime)s %(levelname)s %(message)s'
+#         },
+#         'verbose_format': {
+#             'format': '%(asctime)s %(levelname)s '
+#                       '%(message)s %(pathname)s'
+#         },
+#         'extended_format': {
+#             'format': '%(asctime)s %(levelname)s '
+#                       '%(message)s %(pathname)s %(exc_info)s '
+#         },
+#         'module_format': {
+#             'format': '%(asctime)s %(levelname)s '
+#                       '%(module)s  %(message)s'
+#         },
+#     },
+#     'filters': {
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse',
+#         },
+#     },
+#
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple_format',
+#         },
+#         'general_file': {
+#             'level': 'INFO',
+#             'filters': ['require_debug_false'],
+#             'class': 'logging.FileHandler',
+#             'filename': 'general.log',
+#             'formatter': 'module_format',
+#         },
+#         'verbose_console': {
+#             'level': 'WARNING',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'verbose_format',
+#         },
+#         'extended_console': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'extended_format',
+#         },
+#
+#         'errors_file': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.FileHandler',
+#             'filename': 'errors.log',
+#             'formatter': 'extended_format',
+#         },
+#         'security_file': {
+#             'level': 'INFO',
+#             'filters': ['require_debug_false'],
+#             'class': 'logging.FileHandler',
+#             'filename': 'security.log',
+#             'formatter': 'module_format',
+#         },
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'formatter': 'verbose_format'
+#         }
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'extended_console', 'general_file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'django.request': {
+#             'handlers': ['errors_file', 'mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.server': {
+#             'handlers': ['errors_file', 'mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.template': {
+#             'handlers': ['errors_file'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.db.backends': {
+#             'handlers': ['errors_file'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#         'django.security': {
+#             'handlers': ['security_file'],
+#             'level': 'INFO',
+#             'propagate': False,
+#
+#         }
+#     }
+# }

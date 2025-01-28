@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 
+{% load i18n %}
 
 {% block content %}
 <style>
@@ -9,11 +10,11 @@
     background-color: #000000;
   }
 </style>
-<h1>Создание/изменение публикации ({{ object.news_type }}) </h1>
+<h1>{% blocktrans %}Создание/изменение публикации ({{ object.news_type }}{% endblocktrans %}) </h1>
 <hr>
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Сохранить" />
+    <input type="submit" value="{% trans 'Сохранить' %}"  />
 </form>
 {% endblock content %}

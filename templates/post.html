@@ -2,6 +2,7 @@
 
 
 {% load custom_filters %}
+{% load i18n %}
 
 
 {% block title %}
@@ -46,16 +47,16 @@ Post
    {% if post %}
        <table>
            <tr class="main_info">
-               <td>Заголовок</td>
-               <td>Дата публикации</td>
-               <td>Текст</td>
+               <td>{% trans 'Заголовок' %}</td>
+               <td>{% trans 'Дата' %}</td>
+               <td>{% trans 'Текст' %}</td>
            </tr>
 
 
            <tr>
-                <td class="title-color"><b>{{ post.title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b></td>
+                <td class="title-color"><b>{{ post.get_localized_title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b></td>
                <td class="publication_date-color">{{ post.publication_date|date:'M d Y' }}</td>
-               <td style="text-align: justify;"> {{ post.text|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</td>
+               <td style="text-align: justify;"> {{ post.get_localized_text|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</td>
 
            </tr>
 
@@ -67,12 +68,12 @@ Post
         {% if user in category.subscribers.all %}
             <form action="{% url 'subscribe_to_category' category.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Отписаться от публикаций категории {{ category.category_name }}</button>
+                <button type="submit">{% trans 'Отписаться от категории' %} {{ category.get_localized_category}}</button>
             </form>
         {% else %}
             <form action="{% url 'subscribe_to_category' category.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Подписаться на публикации категории {{ category.category_name }}</button>
+                <button type="submit">{% trans 'Подписаться на категориию' %} {{ category.get_localized_category}}</button>
             </form>
         {% endif %}
     </div>
@@ -82,11 +83,11 @@ Post
 
 <div style="margin-top: 20px;">
         <a href="{% url 'posts_list' %}">
-            <button style="font-size: 12px; color: #FFFFFF; background-color: #FF00CC;">Вернуться ко всем публикациям</button>
+            <button style="font-size: 12px; color: #FFFFFF; background-color: #FF00CC;">{% trans 'Вернуться ко всем публикациям' %}</button>
         </a>
 
     </div>
    {% else %}
-       <h2>Публикации не существует!</h2>
+       <h2></h2>
    {% endif %}
 {% endblock content %}

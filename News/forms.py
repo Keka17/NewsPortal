@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 
 from django import forms
 from allauth.account.forms import SignupForm
@@ -8,14 +9,14 @@ from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
 
-    title = forms.CharField(label='Заголовок', min_length=2, max_length=150)
-    text = forms.CharField(label='Содержание', min_length=200)
+    title = forms.CharField(label=_('Заголовок'), min_length=2, max_length=150)
+    text = forms.CharField(label=_('Содержание'), min_length=200)
     # пользователь может добавить нового автора или выбрать уще существующего
-    author_name = forms.CharField(label='Имя автора', required=False)
+    author_name = forms.CharField(label=_('Автор'), required=False)
     author = forms.ModelChoiceField(
         queryset=Author.objects.all(),
-        label='Автор',
-        empty_label="Выберите автора",
+        label=_('Автор'),
+        empty_label=_('Выберите автора'),
         required=False,
         widget=forms.Select,
     )
@@ -31,7 +32,7 @@ class PostForm(forms.ModelForm):
         title = self.cleaned_data['title']
         if title[0].islower():
             raise forms.ValidationError(
-                "Заголовок должно начинаться с заглавной буквы!"
+                _("Заголовок должен начинаться с заглавной буквы!")
             )
         return title
 
@@ -54,7 +55,7 @@ class PostForm(forms.ModelForm):
             # проверка не выбран ли автор из списка
             if author:
                 raise forms.ValidationError(
-                    "Выберите автора из списка или добавьте нового."
+                    _("Выберите автора из списка или добавьте нового")
                 )
 
         # если выбран автор из списка
@@ -63,7 +64,7 @@ class PostForm(forms.ModelForm):
 
         if title == text:
             raise forms.ValidationError(
-                "Содержание статьи не должно быть идентивным описанию!"
+                _("Содержание статьи не должно быть идентичным описанию!")
             )
 
         return cleaned_data
@@ -94,3 +95,5 @@ class BasicSignupForm(SignupForm):
         basic_group = Group.objects.get(name='common')
         basic_group.user_set.add(user)
         return user
+
+

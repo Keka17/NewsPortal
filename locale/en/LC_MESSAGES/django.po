@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-23 19:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: News/filters.py:12
+msgid "Публикация от"
+msgstr "Publication date"
+
+#: News/filters.py:22 News/forms.py:12 News/models.py:70 templates/post.html:50
+#: templates/posts.html:36
+msgid "Заголовок"
+msgstr "Title"
+
+#: News/filters.py:23 News/forms.py:15 News/forms.py:18 News/models.py:14
+#: News/models.py:66
+msgid "Автор"
+msgstr "Author"
+
+#: News/forms.py:13
+msgid "Содержание"
+msgstr "Content"
+
+#: News/forms.py:19
+msgid "Выберите автора"
+msgstr "Select an author"
+
+#: News/forms.py:35
+msgid "Заголовок должен начинаться с заглавной буквы!"
+msgstr "The title must begin with a capital letter!"
+
+#: News/forms.py:58
+msgid "Выберите автора из списка или добавьте нового"
+msgstr "Select an author from the list or add a new one"
+
+#: News/forms.py:67
+msgid "Содержание статьи не должно быть идентичным описанию!"
+msgstr "The content of the article should not be identical to the description!"
+
+#: News/models.py:41 News/models.py:69
+msgid "Категория"
+msgstr "Category"
+
+#: News/models.py:44
+#, fuzzy
+#| msgid "Категория"
+msgid "Категория (английский)"
+msgstr "Category"
+
+#: News/models.py:62
+msgid "Статья"
+msgstr "Article"
+
+#: News/models.py:63
+msgid "Новость"
+msgstr "News"
+
+#: News/models.py:67
+msgid "Тип публикации"
+msgstr "Publication type"
+
+#: News/models.py:68 templates/post.html:51 templates/posts.html:37
+msgid "Дата"
+msgstr "Date"
+
+#: News/models.py:71 templates/post.html:52 templates/posts.html:38
+msgid "Текст"
+msgstr "Text"
+
+#: News/models.py:75
+#, fuzzy
+#| msgid "Заголовок"
+msgid "Заголовок (английский)"
+msgstr "Title"
+
+#: News/models.py:76
+msgid "Текст (английский)"
+msgstr ""
+
+#: templates/flatpages/default.html:29
+msgid "ГЛАВНАЯ"
+msgstr "MAIN PAIGE"
+
+#: templates/flatpages/default.html:32
+msgid "ПОИСК ПУБЛИКАЦИИ"
+msgstr "SEARCH"
+
+#: templates/flatpages/default.html:35
+msgid "СОЗДАТЬ НОВОСТЬ"
+msgstr "CREATE NEWS"
+
+#: templates/flatpages/default.html:38
+msgid "СОЗДАТЬ СТАТЬЮ"
+msgstr "CREATE ARTICLE"
+
+#: templates/flatpages/default.html:41
+msgid "ЛИЧНЫЙ КАБИНЕТ"
+msgstr "PERSONAL ACCOUNT"
+
+#: templates/flatpages/default.html:56
+msgid "Выбрать язык"
+msgstr "Change language"
+
+#: templates/flatpages/default.html:67
+msgid "Выбрать часовой пояс"
+msgstr "Choose timezone"
+
+#: templates/post.html:71
+msgid "Отписаться от категории"
+msgstr "Unsubscribe from category"
+
+#: templates/post.html:76
+msgid "Подписаться на категориию"
+msgstr "Subscribe to category"
+
+#: templates/post.html:86
+msgid "Вернуться ко всем публикациям"
+msgstr "Return to all publications"
+
+#: templates/post_create.html:13
+#, python-format
+msgid "Создание/изменение публикации (%(object.news_type)s"
+msgstr "Creating/Editing Publication (%(object.news_type)s"
+
+#: templates/post_create.html:18
+msgid "Сохранить"
+msgstr "Save"
+
+#: templates/post_delete.html:13
+msgid "Удаление"
+msgstr "Deleting"
+
+#: templates/post_delete.html:18
+msgid "Вы уверены"
+msgstr "Are you sure?"
+
+#: templates/post_delete.html:19
+msgid "Абсолютно"
+msgstr "Absolutely"
+
+#: templates/posts.html:31
+#, python-format
+msgid "Количество публикаций: %(post_count)s"
+msgstr "Publications count: %(post_count)s"
+
+#: templates/search_post.html:14
+msgid "Поиск публикации"
+msgstr "Publication search"
+
+#: templates/search_post.html:18
+msgid "Найти"
+msgstr "Find"
+
+#: templates/search_post.html:22
+msgid "Ранние публикации"
+msgstr "Previous publications"
+
+#: templates/search_post.html:31
+msgid "Ничего не найдено"
+msgstr "No result"

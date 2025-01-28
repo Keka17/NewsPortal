@@ -1,6 +1,8 @@
 {% extends 'flatpages/default.html' %}
-
 {% load custom_filters %}
+{% load i18n %}
+
+
 
 
 {% block title %}
@@ -24,36 +26,33 @@ Posts
     .publication_date-color {
    color: #00FF00;
    }
-
-
-
 </style>
-   <h1>Количество публикаций: {{ post_count }}</h1>
 
+    <h1>{% blocktrans %}Количество публикаций: {{ post_count }}{% endblocktrans %}</h1>
    <hr>
    {% if posts %}
        <table>
            <tr style="border-bottom: 2px solid black;">
-               <td>Заголовок</td>
-               <td>Дата публикации</td>
-               <td>Превью</td>
+               <td>{% trans 'Заголовок' %}</td>
+               <td>{% trans 'Дата' %}</td>
+               <td>{% trans 'Текст' %}</td>
            </tr>
 
            {% for post in posts%}
          <tr style="border-bottom: 2px solid black;">
         <td>
             <a href="{% url 'post_detail' post.pk %}">
-                <b>{{ post.title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b>
+                <b>{{ post.get_localized_title|censor:"викинг, Викинги, викингов, лидер, Лидер" }}</b>
             </a>
         </td>
         <td class="publication_date-color">{{ post.publication_date|date:'M d Y' }}</td>
-        <td style="text-align: justify;">{{ post.text|censor:"викинг, Викинги, викингов, лидер, Лидер"|truncatewords:20 }}</td>
+        <td style="text-align: justify;">{{ post.get_localized_text|censor:"викинг, Викинги, викингов, лидер, Лидер"|truncatewords:20 }}</td>
     </tr>
            {% endfor %}
 
        </table>
    {% else %}
-       <h2>Публикаций нет!</h2>
+       <h2></h2>
    {% endif %}
     {# Добавляем пагинацию на страницу #}
 
